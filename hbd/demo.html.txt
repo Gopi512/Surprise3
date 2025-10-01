@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise 🎁</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Pacifico', cursive;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+  }
+
+  button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    background-color: #ff4081;
+    border: none;
+    color: white;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    z-index: 10;
+  }
+  button:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  /* Secret message overlay */
+  .secret-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: rgba(255, 249, 230, 0.95);
+    padding: 40px 60px;
+    border-radius: 20px;
+    border: 4px solid #d4af37;
+    text-align: center;
+    z-index: 9;
+    transition: transform 1s ease, opacity 1s ease;
+    opacity: 0;
+    max-width: 90%;
+  }
+  .secret-message.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  .secret-message h1 {
+    color: #ff4081;
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  .secret-message p {
+    color: #555;
+    font-size: 1.5rem;
+  }
+
+  /* Fullscreen slideshow background */
+  .slideshow-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .slides {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    transition: opacity 1s ease-in-out;
+  }
+
+  /* Floating cute emojis */
+  .emoji {
+    position: absolute;
+    font-size: 24px;
+    pointer-events: none;
+    animation: floatUp linear forwards;
+    z-index: 11;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-50px) rotate(360deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<button id="revealBtn">Click Me for Secret Message 🎁</button>
+
+<!-- Secret Message -->
+<div class="secret-message" id="secretMessage">
+  <h1>🎉 Happy Birthday! 🎁</h1>
+  <p>My Dearest Sister, may your day be filled with love, laughter, and endless joy! 💖💛💜</p>
+</div>
+
+<!-- Slideshow as background -->
+<div class="slideshow-bg" id="slideshow">
+  <img src="images/Snapchat-1733815710.jpg" class="slides">
+  <img src="images/1000132419.jpg" class="slides">
+  <img src="images/2025-01-08-16-57-21-037.jpg" class="slides">
+  <img src="images/20250930_103542.jpg" class="slides">
+  <img src="images/Snapchat-1192046180.jpg" class="slides">
+</div>
+
+<script>
+  const button = document.getElementById('revealBtn');
+  const secretMessage = document.getElementById('secretMessage');
+  const emojis = ['💖','💛','💜','🌟','✨','🎉','🧸','🎁','🐻'];
+
+  button.addEventListener('click', () => {
+    button.style.display = 'none';
+    secretMessage.classList.add('show');
+    startSlideshow();
+    launchEmojis();
+  });
+
+  // Slideshow logic
+  let slideIndex = 0;
+  function startSlideshow() {
+    const slides = document.getElementsByClassName("slides");
+    for (let i = 0; i < slides.length; i++) {
+      slides[i].style.opacity = 0;
+      slides[i].style.display = "block";
+    }
+    function showNextSlide() {
+      for (let i = 0; i < slides.length; i++) slides[i].style.opacity = 0;
+      slides[slideIndex].style.opacity = 1;
+      slideIndex = (slideIndex + 1) % slides.length;
+      setTimeout(showNextSlide, 3000);
+    }
+    showNextSlide();
+  }
+
+  // Floating emojis continuously
+  function launchEmojis() {
+    const emoji = document.createElement('div');
+    emoji.className = 'emoji';
+    emoji.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    emoji.style.left = Math.random()*window.innerWidth + 'px';
+    emoji.style.fontSize = (20 + Math.random()*40) + 'px';
+    emoji.style.animationDuration = (4 + Math.random()*4) + 's';
+    document.body.appendChild(emoji);
+    setTimeout(()=>emoji.remove(), 10000);
+    setTimeout(launchEmojis, 200);
+  }
+</script>
+
+</body>
+</html>
